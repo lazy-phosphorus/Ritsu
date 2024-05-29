@@ -1,0 +1,52 @@
+{
+    "cmakeMinimumRequired": {
+        "major": 3,
+        "minor": 29,
+        "patch": 3
+    },
+    "configurePresets": [
+        {
+            "binaryDir": "${sourceDir}/build",
+            "cacheVariables": {
+                "CMAKE_ARCHIVE_OUTPUT_DIRECTORY": "${sourceDir}/lib",
+                "CMAKE_C_STANDARD": "17",
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "on",
+                "CMAKE_LIBRARY_OUTPUT_DIRECTORY": "${sourceDir}/bin",
+                "CMAKE_RUNTIME_OUTPUT_DIRECTORY": "${sourceDir}/bin"
+            },
+            "description": "Basic configuration.",
+            "hidden": true,
+            "name": "base"
+        },
+        {
+            "cacheVariables": {
+                "CMAKE_C_COMPILER": "clang"
+            },
+            "description": "Basic configuration for Windows",
+            "generator": "MinGW Makefiles",
+            "hidden": true,
+            "name": "win"
+        },
+        {
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug"
+            },
+            "description": "Debug configuration for Windows",
+            "displayName": "Windows debug preset",
+            "hidden": false,
+            "inherits": ["base", "win"],
+            "name": "win-dbg"
+        },
+        {
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug"
+            },
+            "description": "Release configuration for Windows",
+            "displayName": "Windows release preset",
+            "hidden": false,
+            "inherits": ["base", "win"],
+            "name": "win-rel"
+        }
+    ],
+    "version": 8
+}
