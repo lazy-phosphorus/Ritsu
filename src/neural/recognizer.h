@@ -3,31 +3,20 @@
 
 #include "collection/list.h"
 #include "declaration.h"
+#include "type/text-block.h"
 
 typedef TessBaseAPI *Recognizer;
 
-typedef struct __RecognizerResult {
-    char *text;
-    int left;
-    int right;
-    int top;
-    int bottom;
-} __RecognizerResult;
+USE_LIST(TextBlock);
 
-typedef __RecognizerResult *RecognizerResult;
+typedef List(TextBlock) RecognizerResult;
 
-UseList(RecognizerResult);
-
-Recognizer RecognizerNew(const char *const restrict modelDir,
+Recognizer RecognizerNew(const Path restrict modelDir,
                          const char *const restrict language);
 
-void RecognizerDelete(const Recognizer restrict this);
+void RecognizerDelete(Recognizer *const restrict this);
 
-RecognizerResult RecognizerResultNew();
-
-void RecognizerResultDelete(RecognizerResult restrict this);
-
-List(RecognizerResult) RecognizerRecognize(const Recognizer restrict this,
-                                           const Image restrict image);
+RecognizerResult RecognizerRecognize(Recognizer restrict this,
+                                     const Image restrict image);
 
 #endif  // RITSU_NEURAL_RECOGNIZER_H

@@ -14,38 +14,41 @@
                 "CMAKE_LIBRARY_OUTPUT_DIRECTORY": "${sourceDir}/bin",
                 "CMAKE_RUNTIME_OUTPUT_DIRECTORY": "${sourceDir}/bin"
             },
-            "description": "Basic configuration.",
             "hidden": true,
             "name": "base"
         },
         {
             "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug"
+            },
+            "hidden": true,
+            "inherits": "base",
+            "name": "debug"
+        },
+        {
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release"
+            },
+            "hidden": true,
+            "inherits": "base",
+            "name": "release"
+        },
+        {
+            "cacheVariables": {
                 "CMAKE_C_COMPILER": "clang"
             },
-            "description": "Basic configuration for Windows",
             "generator": "MinGW Makefiles",
             "hidden": true,
-            "name": "win"
+            "name": "windows"
         },
         {
-            "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "Debug"
-            },
-            "description": "Debug configuration for Windows",
-            "displayName": "Windows debug preset",
-            "hidden": false,
-            "inherits": ["base", "win"],
+            "description": "Windows Debug Configuration",
+            "displayName": "Windows Debug",
+            "inherits": [
+                "debug",
+                "windows"
+            ],
             "name": "win-dbg"
-        },
-        {
-            "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "Debug"
-            },
-            "description": "Release configuration for Windows",
-            "displayName": "Windows release preset",
-            "hidden": false,
-            "inherits": ["base", "win"],
-            "name": "win-rel"
         }
     ],
     "version": 8

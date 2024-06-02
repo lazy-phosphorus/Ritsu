@@ -3,6 +3,6 @@
 
 #include "declaration.h"
 
-Image ScreenShot();
+Image ScreenCapture();
 
 #endif  // RITSU_HARDWARE_SCREEN_H

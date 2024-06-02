@@ -1,60 +1,45 @@
 #include "recognizer.h"
 
-#include <assert.h>
-#include <malloc.h>
 #include <tesseract/capi.h>
 
 #include "type/image.h"
+#include "type/path.h"
 
-Recognizer RecognizerNew(const char *const restrict modelDir,
+Recognizer RecognizerNew(const Path restrict modelDir,
                          const char *const restrict language) {
-    TessBaseAPI *this = TessBaseAPICreate();
-    TessBaseAPIInit3(this, modelDir, language);
+    Recognizer this = TessBaseAPICreate();
+    TessBaseAPIInit3(this, PathString(modelDir), language);
     TessBaseAPISetPageSegMode(this, PSM_AUTO);
     return this;
 }
 
-void RecognizerDelete(const Recognizer restrict this) {
-    TessBaseAPIEnd(this);
-    TessBaseAPIDelete(this);
+void RecognizerDelete(Recognizer *const restrict this) {
+    TessBaseAPIEnd(*this);
+    TessBaseAPIDelete(*this);
+    *this = NULL;
 }
 
-List(RecognizerResult) RecognizerRecognize(const Recognizer restrict this,
-                                           const Image restrict image) {
+RecognizerResult RecognizerRecognize(Recognizer restrict this,
+                                     const Image restrict image) {
+    RecognizerResult results = ListNew(TextBlock);
     TessResultIterator *iterator = NULL;
     TessPageIterator *page = NULL;
-    RecognizerResult temp = RecognizerResultNew();
-    List(RecognizerResult) list = ListNew(RecognizerResult);
-
-    TessBaseAPISetImage(this, image->data, image->width, image->height,
-                        image->bytesPerPixel, image->bytesPerLine);
+    TextBlock temp;
+    TessBaseAPISetImage(this, image->pixels, image->width, image->height,
+                        image->bytePerPixel, image->bytePerLine);
     TessBaseAPIRecognize(this, NULL);
+
     iterator = TessBaseAPIGetIterator(this);
     if (iterator != NULL) {
         do {
             page = TessResultIteratorGetPageIterator(iterator);
-            temp->text = TessResultIteratorGetUTF8Text(iterator, RIL_TEXTLINE);
-            TessPageIteratorBoundingBox(page, RIL_TEXTLINE, &temp->left,
-                                        &temp->top, &temp->right,
-                                        &temp->bottom);
-            ListPushBack(RecognizerResult, list, temp);
+            temp.text = TessResultIteratorGetUTF8Text(iterator, RIL_TEXTLINE);
+            TessPageIteratorBoundingBox(page, RIL_TEXTLINE, &temp.left,
+                                        &temp.top, &temp.right, &temp.bottom);
+            printf("%s, (%d, %d)\n", temp.text, temp.left, temp.top);
+            ListPushBack(TextBlock, results, temp);
         } while (TessResultIteratorNext(iterator, RIL_TEXTLINE));
     }
-    return list;
-}
 
-RecognizerResult RecognizerResultNew() {
-    RecognizerResult this =
-        (RecognizerResult)malloc(sizeof(__RecognizerResult));
-    this->text = NULL;
-    this->top = 0;
-    this->bottom = 0;
-    this->left = 0;
-    this->right = 0;
-    return this;
-}
-
-void RecognizerResultDelete(RecognizerResult restrict this) {
-    free(this->text);
-    free(this);
+    return results;
 }
