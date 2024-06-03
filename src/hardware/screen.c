@@ -9,7 +9,7 @@
 
 // Windows screenshot reference: https://github.com/kbinani/screenshot
 
-#include <Windows.h>
+#include <windows.h>
 
 Image ScreenCapture() {
     int width = 0, height = 0, i = 0;
@@ -76,5 +76,9 @@ Image ScreenCapture() {
 
     return screenshot;
 }
+
+#elif defined(__linux__)
+
+// TODO linux support
 
 #endif

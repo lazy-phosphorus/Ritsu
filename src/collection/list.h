@@ -1,9 +1,6 @@
 #ifndef RITSU_COLLECTION_LIST_H
 #define RITSU_COLLECTION_LIST_H
 
-#include <assert.h>
-#include <malloc.h>
-
 #define __ListNode(Type) struct __##Type##ListNode
 #define ListNode(Type) __ListNode(Type) *
 #define __List(Type) struct __##Type##List
@@ -74,8 +71,10 @@
     if (this->size == 0) {                                               \
         this->head = __ListNodeNew(Type, value, NULL, NULL);             \
         this->tail = this->head;                                         \
-    } else                                                               \
+    } else {                                                             \
         this->tail->next = __ListNodeNew(Type, value, this->tail, NULL); \
+        this->tail = this->tail->next;                                   \
+    }                                                                    \
     this->size++;
 
 #endif  // RITSU_COLLECTION_LIST_H

@@ -1,9 +1,6 @@
 #ifndef RITSU_COLLECTION_ARRAY_H
 #define RITSU_COLLECTION_ARRAY_H
 
-#include <assert.h>
-#include <malloc.h>
-
 #define __Array(Type) struct __##Type##Array
 #define Array(Type) __Array(Type) *
 

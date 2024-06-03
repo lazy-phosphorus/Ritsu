@@ -1,5 +1,7 @@
 #include "recognizer.h"
 
+#include <assert.h>
+#include <malloc.h>
 #include <tesseract/capi.h>
 
 #include "type/image.h"
@@ -36,7 +38,6 @@ RecognizerResult RecognizerRecognize(Recognizer restrict this,
             temp.text = TessResultIteratorGetUTF8Text(iterator, RIL_TEXTLINE);
             TessPageIteratorBoundingBox(page, RIL_TEXTLINE, &temp.left,
                                         &temp.top, &temp.right, &temp.bottom);
-            printf("%s, (%d, %d)\n", temp.text, temp.left, temp.top);
             ListPushBack(TextBlock, results, temp);
         } while (TessResultIteratorNext(iterator, RIL_TEXTLINE));
     }
