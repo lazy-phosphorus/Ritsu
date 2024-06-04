@@ -44,3 +44,7 @@ RecognizerResult RecognizerRecognize(Recognizer restrict this,
 
     return results;
 }
+
+void RecognizerResultDelete(RecognizerResult *const restrict results) {
+    ListDelete1(TextBlock, results, TextBlockDestruct);
+}

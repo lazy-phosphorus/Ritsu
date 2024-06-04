@@ -11,4 +11,8 @@ typedef struct Point Point;
 // tesseract
 typedef struct TessBaseAPI TessBaseAPI;
 
+// lua
+typedef struct lua_State lua_State;
+typedef lua_State *LuaContext;
+
 #endif  // RITSU_DECLARATION_H

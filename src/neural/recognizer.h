@@ -19,4 +19,6 @@ void RecognizerDelete(Recognizer *const restrict this);
 RecognizerResult RecognizerRecognize(Recognizer restrict this,
                                      const Image restrict image);
 
+void RecognizerResultDelete(RecognizerResult *const restrict results);
+
 #endif  // RITSU_NEURAL_RECOGNIZER_H

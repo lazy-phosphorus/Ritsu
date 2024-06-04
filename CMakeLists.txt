@@ -12,13 +12,14 @@ project(ritsu VERSION 0.1.0 LANGUAGES C)
 # third party dependency
 find_package(PkgConfig REQUIRED)
 pkg_search_module(TESSERACT REQUIRED tesseract)
+pkg_search_module(LUA REQUIRED lua)
 
 # header directory`
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src ${TESSERACT_INCLUDE_DIRS})
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src ${TESSERACT_INCLUDE_DIRS} ${LUA_INCLUDE_DIRS})
 
 # source code
 file(GLOB_RECURSE ALL_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/*.c)
 
 # build target
 add_executable(${PROJECT_NAME} ${ALL_SOURCES})
-target_link_libraries(${PROJECT_NAME} PRIVATE ${TESSERACT_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} PRIVATE ${TESSERACT_LIBRARIES} ${LUA_LIBRARIES})
