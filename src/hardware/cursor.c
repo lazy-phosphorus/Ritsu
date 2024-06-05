@@ -1,12 +1,17 @@
 #include "cursor.h"
 
+#include <assert.h>
+
 #include "type/point.h"
 
 #ifdef WIN32
 
 #include <windows.h>
 
-void MouseMoveTo(Point point) { SetCursorPos(point.x, point.y); }
+void MouseMoveTo(Point point) {
+    WINBOOL ret = SetCursorPos(point.x, point.y);
+    assert(ret == TRUE);
+}
 
 void MouseLeftClick() {
     mouse_event(MOUSEEVENTF_LEFTDOWN | MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);

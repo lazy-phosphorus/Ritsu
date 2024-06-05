@@ -5,16 +5,22 @@
 #include <string.h>
 
 Path PathNew(const char *const restrict path) {
+    assert(path != NULL);
     unsigned int length = strlen(path);
     Path this = ArrayNew(char, length);
+    assert(this != NULL);
     memcpy(this->array, path, length * sizeof(char));
     this->size = length;
     return this;
 }
 
-void PathDelete(Path *const restrict this) { ArrayDelete(char, this); }
+void PathDelete(Path *const restrict this) {
+    assert(this != NULL);
+    ArrayDelete(char, this);
+}
 
 void PathParent(Path restrict this) {
+    assert(this != NULL);
     char temp = '\0';
     for (unsigned int i = this->size - 1; i > 0; i--) {
         temp = ArrayGet(char, this, i);
@@ -27,6 +33,8 @@ void PathParent(Path restrict this) {
 }
 
 void PathJoin(Path restrict this, const char *const restrict path) {
+    assert(this != NULL);
+    assert(path != NULL);
     unsigned int length = strlen(path);
 
     if (path[length - 1] == '/' || path[length - 1] == '\\') {

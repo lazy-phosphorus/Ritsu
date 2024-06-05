@@ -7,6 +7,7 @@
 
 #include "neural/recognizer.h"
 #include "type/path.h"
+#include "type/point.h"
 
 static int __RecognizerDelete(LuaContext restrict this) {
     Recognizer *ocr = NULL;
@@ -18,7 +19,7 @@ static int __RecognizerDelete(LuaContext restrict this) {
         // TODO redundant paramter warning
     }
 
-    ocr = (Recognizer *)lua_touserdata(this, -1);
+    ocr = (Recognizer *)lua_touserdata(this, 1);
     if (ocr == NULL) {
         // TODO incorrect paramter type exception
         return 0;
@@ -38,7 +39,7 @@ static int __RecognizerResultDelete(LuaContext restrict this) {
         // TODO redundant paramter warning
     }
 
-    list = (RecognizerResult *)lua_touserdata(this, -1);
+    list = (RecognizerResult *)lua_touserdata(this, 1);
     if (list == NULL) {
         // TODO incorrect paramter type exception
         return 0;
@@ -82,7 +83,7 @@ static int __RecognizerNew(LuaContext restrict this) {
         if (argc > 1) {
             // TODO redundant paramter warning
         }
-        temp = lua_tostring(this, -1);
+        temp = lua_tostring(this, 1);
         path = PathNew(temp);
 
         /* only chinese supported for now */
@@ -110,12 +111,12 @@ static int __RecognizerRecognize(LuaContext restrict this) {
         // TODO redundant paramter warning
     }
 
-    ocr = (Recognizer *)lua_touserdata(this, -2);
+    ocr = (Recognizer *)lua_touserdata(this, 1);
     if (ocr == NULL) {
         // TODO incorrect paramter type exception
         return 0;
     }
-    image = (Image *)lua_touserdata(this, -1);
+    image = (Image *)lua_touserdata(this, 2);
     if (image == NULL) {
         // TODO incorrect paramter type exception
         return 0;
@@ -148,6 +149,45 @@ static int __RecognizerRecognize(LuaContext restrict this) {
     return 1;
 }
 
+static int __RecognizerFindText(LuaContext restrict this) {
+    Point output;
+    Recognizer *ocr = NULL;
+    Image *image = NULL;
+    RecognizerResult list = NULL;
+    const char *text = NULL;
+    bool ret = false;
+    int argc = lua_gettop(this), i = 0;
+    if (argc < 3) {
+        // TODO missing paramter exception
+        return 0;
+    } else if (argc > 3) {
+        // TODO redundant paramter warning
+    }
+
+    ocr = (Recognizer *)lua_touserdata(this, 1);
+    if (ocr == NULL) {
+        // TODO incorrect paramter type exception
+        return 0;
+    }
+    image = (Image *)lua_touserdata(this, 2);
+    if (image == NULL) {
+        // TODO incorrect paramter type exception
+        return 0;
+    }
+    text = lua_tostring(this, 3);
+    if (text == NULL) {
+        // TODO incorrect paramter type exception
+    }
+
+    ret = RecognizerFindText(*ocr, *image, text, &output);
+    if (ret) {
+        lua_pushinteger(this, output.x);
+        lua_pushinteger(this, output.y);
+        return 2;
+    } else
+        return 0;
+}
+
 void LuaAddRecognizerMetatable(LuaContext restrict this) {
     /* create `Recognizer` class */
     if (luaL_newmetatable(this, LUA_RECOGNIZER_METATABLE_NAME) == false) {
@@ -159,6 +199,8 @@ void LuaAddRecognizerMetatable(LuaContext restrict this) {
     lua_setfield(this, -2, "__gc");
     lua_pushcfunction(this, __RecognizerRecognize);
     lua_setfield(this, -2, "Recognize");
+    lua_pushcfunction(this, __RecognizerFindText);
+    lua_setfield(this, -2, "FindText");
     lua_pop(this, 1);
 
     /* add constructor function */

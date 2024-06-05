@@ -19,12 +19,12 @@ static int __MouseMoveTo(LuaContext restrict this) {
         // TODO redundant paramter warning
     }
 
-    point.x = lua_tointegerx(this, -1, &success);
+    point.x = lua_tointegerx(this, 1, &success);
     if (success == false) {
         // TODO incorrect paramter type exceptioin
         return 0;
     }
-    point.y = lua_tointegerx(this, -2, &success);
+    point.y = lua_tointegerx(this, 2, &success);
     if (success == false) {
         // TODO incorrect paramter type exceptioin
         return 0;
