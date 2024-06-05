@@ -110,12 +110,12 @@ static int __RecognizerRecognize(LuaContext restrict this) {
         // TODO redundant paramter warning
     }
 
-    ocr = (Recognizer *)lua_touserdata(this, -1);
+    ocr = (Recognizer *)lua_touserdata(this, -2);
     if (ocr == NULL) {
         // TODO incorrect paramter type exception
         return 0;
     }
-    image = (Image *)lua_touserdata(this, -2);
+    image = (Image *)lua_touserdata(this, -1);
     if (image == NULL) {
         // TODO incorrect paramter type exception
         return 0;
@@ -143,6 +143,8 @@ static int __RecognizerRecognize(LuaContext restrict this) {
         node = node->next;
         i++;
     }
+
+    RecognizerResultDelete(&list);
     return 1;
 }
 

@@ -44,11 +44,14 @@
         {
             "description": "Windows Debug Configuration",
             "displayName": "Windows Debug",
-            "inherits": [
-                "debug",
-                "windows"
-            ],
+            "inherits": ["debug", "windows"],
             "name": "win-dbg"
+        },
+        {
+            "description": "Windows Debug Configuration",
+            "displayName": "Windows Debug",
+            "inherits": ["release", "windows"],
+            "name": "win-rel"
         }
     ],
     "version": 8

@@ -12,6 +12,7 @@ Recognizer RecognizerNew(const Path restrict modelDir,
     Recognizer this = TessBaseAPICreate();
     TessBaseAPIInit3(this, PathString(modelDir), language);
     TessBaseAPISetPageSegMode(this, PSM_AUTO);
+    TessBaseAPISetVariable(this, "debug_file", "/dev/null");
     return this;
 }
 
@@ -27,8 +28,10 @@ RecognizerResult RecognizerRecognize(Recognizer restrict this,
     TessResultIterator *iterator = NULL;
     TessPageIterator *page = NULL;
     TextBlock temp;
+
     TessBaseAPISetImage(this, image->pixels, image->width, image->height,
                         image->bytePerPixel, image->bytePerLine);
+
     TessBaseAPIRecognize(this, NULL);
 
     iterator = TessBaseAPIGetIterator(this);

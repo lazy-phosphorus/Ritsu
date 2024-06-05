@@ -6,6 +6,7 @@
 
 #include "hardware/screen.h"
 #include "script/lua/metatable/image.h"
+#include "type/image.h"
 
 static int __ScreenCapture(LuaContext restrict this) {
     Image *image = NULL;
